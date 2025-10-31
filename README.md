@@ -14,7 +14,7 @@ O layout do projeto está disponível no Figma:
 
 ### Frontend
 
-- React
+- React + Vite
 - TypeScript
 - Tailwind CSS
 
