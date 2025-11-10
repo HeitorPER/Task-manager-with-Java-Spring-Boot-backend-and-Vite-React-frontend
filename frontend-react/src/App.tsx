@@ -1,10 +1,12 @@
+import NavBar from './components/navbar'
+
 function App() {
 
   return (
-    <div className="min-h-screen bg-bg font-sans">
-      <p className="text-white">Boa sorte no projeto! <br /> - Menoni ❤️</p>
+    <div className="min-h-screen w-full bg-bg font-poppins">
+      <NavBar />
     </div>
-  )
+  );
 }
 
 export default App
