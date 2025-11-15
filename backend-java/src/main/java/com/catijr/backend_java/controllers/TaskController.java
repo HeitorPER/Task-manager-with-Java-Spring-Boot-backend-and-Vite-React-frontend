@@ -19,42 +19,33 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    /**
-     * [POST] /tasks
-     */
+    //[POST] /tasks 
     @PostMapping
     public ResponseEntity<Task> createTask(@Valid @RequestBody TaskCreateDTO dto) {
         Task newTask = taskService.createTask(dto);
         return new ResponseEntity<>(newTask, HttpStatus.CREATED);
     }
 
-    /**
-     * [GET] /tasks/:id
-     */
+    //[GET] /tasks/:id
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
-    /**
-     * [PUT] /tasks/:id
-     * Note: Não usamos @Valid aqui porque os campos do TaskUpdateDTO são 
-     * todos opcionais por padrão, a menos que você adicione validações neles.
-     */
+    //[PUT] /tasks/:id
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody TaskUpdateDTO dto) {
         return ResponseEntity.ok(taskService.updateTask(id, dto));
     }
 
-    /**
-     * [DELETE] /tasks/:id
-     */
+    //[DELETE] /tasks/:id
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
 
+    //[POST] /reorder (uso do dnd)
     @PostMapping("/reorder")
     public ResponseEntity<Void> reorderTasks(@RequestBody ReorderTasksDTO dto) {
         taskService.reorderTasks(dto);

@@ -11,19 +11,13 @@ import java.util.Map;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-
-    // ESTE É O NOVO MÉTODO
+    
     @ExceptionHandler(BusinessRuleException.class)
     protected ResponseEntity<Object> handleBusinessRule(BusinessRuleException ex) {
         
-        // Retorna um objeto JSON { "error": "mensagem da exceção" }
         Map<String, String> errorBody = Map.of("error", ex.getMessage());
-        
-        // Retorna o status HTTP 409 (Conflict)
         return new ResponseEntity<>(errorBody, HttpStatus.CONFLICT);
     }
-
-    // MANTENHA ESTE AQUI (por segurança, caso o banco pegue)
     @ExceptionHandler(DataIntegrityViolationException.class)
     protected ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         

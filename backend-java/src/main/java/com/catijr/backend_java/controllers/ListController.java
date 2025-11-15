@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/lists") // Define a rota base
-@CrossOrigin(origins = "http://localhost:5173") // Permite o React
+@RequestMapping("/lists") 
+@CrossOrigin(origins = "http://localhost:5173") 
 public class ListController {
 
     @Autowired
@@ -47,6 +47,6 @@ public class ListController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteList(@PathVariable Long id) {
         listService.deleteList(id);
-        return ResponseEntity.noContent().build(); // Retorna 204 No Content
+        return ResponseEntity.noContent().build(); 
     }
 }

@@ -21,22 +21,16 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     @Autowired
-    private TaskListRepository taskListRepository; // Para buscar a lista "pai"
+    private TaskListRepository taskListRepository; 
 
-    /**
-     * [GET] /tasks/:id
-     * Busca uma tarefa pelo seu ID.
-     */
+    //[GET] /tasks/:id
     @Transactional(readOnly = true)
     public Task getTaskById(Long id) {
         return taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tarefa não encontrada com ID: " + id)); // Use sua exceção customizada
+                .orElseThrow(() -> new RuntimeException("Tarefa não encontrada com ID: " + id)); 
     }
 
-    /**
-     * [POST] /tasks
-     * Cria uma nova tarefa e a associa a uma lista existente.
-     */
+    //[POST] /tasks
     @Transactional
     public Task createTask(TaskCreateDTO dto) {
         TaskList parentList = taskListRepository.findById(dto.listId())
@@ -58,16 +52,11 @@ public class TaskService {
         return taskRepository.save(newTask);
     }
 
-    /**
-     * [PUT] /tasks/:id
-     * Atualiza uma tarefa existente. Somente os campos presentes no DTO são atualizados.
-     */
+    //[PUT] /tasks/:id
     @Transactional
     public Task updateTask(Long id, TaskUpdateDTO dto) {
-        // 1. Busca a tarefa existente
-        Task task = getTaskById(id); // Reusa a validação de existência
+        Task task = getTaskById(id); 
 
-        // 2. Atualiza os campos se eles não forem nulos no DTO
         if (dto.name() != null) {
             task.setName(dto.name());
         }
@@ -105,21 +94,16 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    /**
-     * [DELETE] /tasks/:id
-     * Remove uma tarefa pelo seu ID.
-     */
+    //[DELETE] /tasks/:id
     @Transactional
     public void deleteTask(Long id) {
-        // 1. Verifica se a tarefa existe
         if (!taskRepository.existsById(id)) {
             throw new RuntimeException("Tarefa não encontrada com ID: " + id);
         }
-        
-        // 2. Deleta
         taskRepository.deleteById(id);
     }
 
+    //[POST] /reorder (dnd) 
     @Transactional
     public void reorderTasks(ReorderTasksDTO dto) {
         TaskList newList = taskListRepository.findById(dto.newListId())
