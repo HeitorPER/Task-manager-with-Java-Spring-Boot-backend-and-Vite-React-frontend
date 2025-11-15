@@ -6,4 +6,5 @@ services:
       - 'POSTGRES_USER=postgres'
       - 'POSTGRES_PASSWORD=password'
     ports:
-      - '5432'
+      # Mapeia a porta 5432 DO CONTAINER para a porta 5432 DA SUA MÁQUINA
+      - '5432:5432'

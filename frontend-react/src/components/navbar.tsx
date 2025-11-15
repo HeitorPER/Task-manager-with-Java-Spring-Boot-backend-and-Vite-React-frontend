@@ -1,18 +1,21 @@
 import LogoIcon from '../assets/catilogo.png'
-import { ProfileButton } from './buttons'
+import { ProfileButton, NotificationButton} from './buttons'
 
-// Certifique-se de que este é o único componente 'NavBar' no arquivo.
 function NavBar() {
     return (
     <div className="
         w-full
         h-[84px]
-        px-4
-        #5B5B5
+        px-20
+        py-3
         shadow-md
         flex
         items-center
         justify-between
+        font-family-poppins
+        bg-linear-to-b from-[#1f1f1f] to-[#363636]
+
+
         ">
         <div className="flex items-center gap-4">
             <img
@@ -21,14 +24,15 @@ function NavBar() {
             className="h-10 w-auto"
             />
 
-            <div className="text-white font-poppins flex flex-col leading-tight">
+            <div className="text-white flex flex-col leading-tight">
                 <span>cati</span>
                 <span>tasks</span>
             </div>
 
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+            <NotificationButton/>
             <ProfileButton />
             </div>
 
