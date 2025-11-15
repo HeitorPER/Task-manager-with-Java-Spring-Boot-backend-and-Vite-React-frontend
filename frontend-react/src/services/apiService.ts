@@ -1,6 +1,5 @@
 import type { List, Task } from '../types/types';
 
-// Defina seus DTOs (Data Transfer Objects) que o backend espera
 export interface ListCreateDTO {
   name: string;
 }
@@ -20,11 +19,8 @@ export interface TaskUpdateDTO {
   displayOrder?: number;
 }
 
-const API_URL = "http://localhost:8080"; // Sua URL do backend
+const API_URL = "http://localhost:8080";
 
-/**
- * Um helper para tratar as respostas da API
- */
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const errorBody = await response.json().catch(() => ({}));
@@ -32,8 +28,6 @@ async function handleResponse<T>(response: Response): Promise<T> {
   }
   return response.json() as Promise<T>;
 }
-
-// --- API DAS LISTAS ---
 
 export const fetchLists = (): Promise<List[]> => {
   return fetch(`${API_URL}/lists`).then(res => handleResponse<List[]>(res));
@@ -55,8 +49,6 @@ export const updateList = (id: List['id'], dto: ListCreateDTO): Promise<List> =>
   }).then(res => handleResponse<List>(res));
 };
 
-// --- API DAS TAREFAS ---
-
 export const createTask = (dto: TaskCreateDTO): Promise<Task> => {
   return fetch(`${API_URL}/tasks`, {
     method: 'POST',
@@ -77,12 +69,9 @@ export const deleteList = (id: List['id']): Promise<void> => {
   return fetch(`${API_URL}/lists/${id}`, {
     method: 'DELETE'
   }).then(response => {
-    // [DELETE] geralmente retorna 204 No Content (sem corpo JSON)
     if (!response.ok) {
-      // Se der erro (ex: 409 por ter tarefas), ele LÊ o JSON de erro
       return response.json().then(err => { throw new Error(err.error || 'Falha ao deletar lista'); });
     }
-    // Se for sucesso (204), apenas resolve
     return Promise.resolve();
   });
 };

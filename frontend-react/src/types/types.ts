@@ -8,7 +8,7 @@ export interface Task {
   listId: number | string;
   finishDate?: string | null;
   completed: boolean;
-  displayOrder: number
+  displayOrder: number;
 }
 
 export interface List {
