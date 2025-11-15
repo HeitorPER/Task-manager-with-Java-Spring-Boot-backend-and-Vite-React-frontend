@@ -251,64 +251,62 @@ export const useHome = () => {
   };
 
   const handleTaskDragEnd = (event: DragEndEvent) => {
-    // Limpa o clone flutuante
-    setActiveDragTask(null); 
+    // Limpa os estados de "arrastar"
+    setActiveDragTask(null);
 
     const { active, over } = event;
-    if (!over || active.id === over.id) return;
+    if (!over || active.id === over.id) return; // Não mudou
 
-    // --- Identificar a Tarefa (Active) ---
-    const activeData = active.data.current;
-    if (!activeData || activeData.type !== 'Task') return;
-    
-    const oldListId = activeData.listId.toString();
-    const activeTaskId = active.id.toString();
-
-    // --- Identificar o Destino (Over) ---
+    const oldListId = active.data.current?.listId.toString();
     const overData = over.data.current;
-    if (!overData) return;
+    if (!overData || !oldListId) return;
 
-    const overIsList = overData.type === 'List';
-    const overIsTask = overData.type === 'Task';
+    const overListId = (overData.type === 'List') 
+        ? over.id.toString() 
+        : overData.listId.toString();
 
-    if (!overIsList && !overIsTask) return; // Destino inválido
-
-    const newListId = overIsList 
-        ? over.id.toString()             
-        : overData.listId.toString();  
-
-    // --- Atualização Otimista (Mover no Frontend) ---
+    // --- ATUALIZAÇÃO FINAL E SALVAMENTO ---
     setLists(currentLists => {
-      const oldListIndex = currentLists.findIndex(l => l.id.toString() === oldListId);
-      const newListIndex = currentLists.findIndex(l => l.id.toString() === newListId);
-
-      if (oldListIndex === -1 || newListIndex === -1) return currentLists;
-
-      const newListsState = currentLists.map(list => ({...list, tasks: [...list.tasks]}));
-      const oldList = newListsState[oldListIndex];
-      const newList = newListsState[newListIndex];
-
-      const oldTaskIndex = oldList.tasks.findIndex(t => t.id.toString() === activeTaskId);
-      if (oldTaskIndex === -1) return currentLists;
-
-      // 1. Remove da lista antiga
-      const [movedTask] = oldList.tasks.splice(oldTaskIndex, 1);
+      const oldList = currentLists.find(l => l.id.toString() === oldListId)!;
+      const newList = currentLists.find(l => l.id.toString() === overListId)!;
       
-      // 2. Adiciona à nova lista (na posição correta)
-      const newIndex = overIsList 
-        ? 0 // Se largou na lista vazia, vai para o topo
-        : (overData.index ?? 0); // Se largou noutra tarefa, usa o índice dela
-      newList.tasks.splice(newIndex, 0, movedTask);
+      const activeTaskId = active.id.toString();
+      
+      // O 'taskIndex' é o índice na lista onde a tarefa está AGORA
+      // (Se foi movida pelo onDragOver, está na newList)
+      const listToCheck = (oldListId === overListId) ? oldList : newList;
+      const taskIndex = listToCheck.tasks.findIndex(t => t.id.toString() === activeTaskId);
+      
+      if (taskIndex === -1) return [...currentLists];
 
-      // --- Salvar no Backend ---
-      if (oldListId !== newListId) {
-        api.reorderTasks(oldListId, oldList.tasks.map(t => t.id));
-        api.reorderTasks(newListId, newList.tasks.map(t => t.id));
+      // Encontra o novo índice
+      let newIndex;
+      if (overData.type === 'Task') {
+        newIndex = newList.tasks.findIndex(t => t.id.toString() === over.id.toString());
       } else {
-        api.reorderTasks(newListId, newList.tasks.map(t => t.id));
+        // Se largou na lista, mas não numa tarefa, coloca no fim
+        newIndex = newList.tasks.length;
       }
       
-      return newListsState;
+      // Se estava na mesma lista, usa 'arrayMove'
+      if (oldListId === overListId) {
+          const reorderedList = arrayMove(oldList.tasks, taskIndex, newIndex);
+          oldList.tasks = reorderedList;
+      } else {
+          // Se mudou de lista, o 'onDragOver' já moveu, só precisamos de ajustar a posição final
+          const [movedTask] = newList.tasks.splice(taskIndex, 1); // Tira de onde o onDragOver pôs
+          newList.tasks.splice(newIndex, 0, movedTask); // Insere no sítio certo
+      }
+      
+      // --- 6. SALVAR NO BACKEND (A LÓGICA ANTIGA ESTÁ CORRETA) ---
+      if (oldListId !== overListId) {
+        api.reorderTasks(oldListId, oldList.tasks.map(t => t.id));
+        api.reorderTasks(overListId, newList.tasks.map(t => t.id));
+      } else {
+        api.reorderTasks(overListId, newList.tasks.map(t => t.id));
+      }
+
+      return [...currentLists];
     });
   };
 
@@ -340,7 +338,7 @@ export const useHome = () => {
     showTaskDeleteSnackbar,
     handleTaskDragEnd,
     handleTaskDragStart,
-    activeDragTask
+    activeDragTask,
   };
 };
 

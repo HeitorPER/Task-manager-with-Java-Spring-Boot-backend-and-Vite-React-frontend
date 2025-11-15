@@ -44,7 +44,7 @@ export function HomePage() {
     handleCloseTaskSnackbar,
     handleTaskDragStart,
     handleTaskDragEnd,
-    activeDragTask 
+    activeDragTask,
   } = useHome();
 
   const sensors = useSensors(

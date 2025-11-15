@@ -72,10 +72,17 @@ export function TaskCard({ task, index, onUpdateTask, onDeleteTask, onDuplicateT
 
   const overdue = isTaskOverdue(task);
 
+  let opacity = 1; // Padrão
+  if (isDragging) {
+    opacity = 0; // Fica invisível (para o 'DragOverlay')
+  } else if (task.completed) {
+    opacity = 0.5; // Fica 50% opaco se estiver completo
+  }
+  
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0 : 1, 
+    opacity: opacity, // <-- Usa a opacidade calculada
   };
 
 
@@ -96,7 +103,6 @@ export function TaskCard({ task, index, onUpdateTask, onDeleteTask, onDuplicateT
         transition-all duration-300 ease-out
         hover:border-white active:bg-[#343333]
         ${overdue ? 'hover:bg-red-800/60' : 'bg-linear-to-r hover:from-[#232323] hover:to-[#393939]'}
-        ${task.completed ? 'opacity-50 bg-gray-900/50' : ''}
     `}>
        <div className='
             justify-between
