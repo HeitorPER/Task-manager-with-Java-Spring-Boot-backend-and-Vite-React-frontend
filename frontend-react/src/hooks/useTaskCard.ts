@@ -71,9 +71,8 @@ export const useTaskCard = ({ task, onUpdateTask, onDeleteTask, onDuplicateTask,
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Não abre a sidebar se o usuário estiver clicando num input ou botão
     if ((e.target as HTMLElement).closest('input, button, a')) return;
-    if (isEditingName) return; // Não abre se estiver editando o nome
+    if (isEditingName) return; 
 
     onOpenSidebar(task);
   };

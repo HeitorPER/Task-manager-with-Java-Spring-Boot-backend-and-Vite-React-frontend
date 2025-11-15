@@ -72,10 +72,15 @@ export function HomePage() {
     >
     <div className='
       w-full min-h-screen
-      px-[50px] py-[50px]
-      items-start flex
-      gap-5 overflow-x-auto
+      px-4
+       py-[50px]
+      items-center flex
+      gap-5 overflow-y-auto
       bg-[#1E1E1E]
+      md:overflow-x-auto
+      md:flex-row
+      md:items-start
+      md:px-[50px]
     '>
       {lists.map(list => (
         <TaskList 

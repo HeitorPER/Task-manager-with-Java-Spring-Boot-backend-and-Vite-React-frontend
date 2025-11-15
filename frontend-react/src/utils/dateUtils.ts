@@ -8,10 +8,6 @@ export const isTaskOverdue = (task: Task): boolean => {
   if (!task.finishDate) {
     return false;
   }
-  /**if(task.finishDate == todayDate){
-    return false;
-  }*/
-
   const expectedDate = parseISO(task.finishDate);
   return isPast(expectedDate);
 };

@@ -71,18 +71,17 @@ export function TaskCard({ task, index, onUpdateTask, onDeleteTask, onDuplicateT
   });
 
   const overdue = isTaskOverdue(task);
-
-  let opacity = 1; // Padrão
+  let opacity = 1;
   if (isDragging) {
-    opacity = 0; // Fica invisível (para o 'DragOverlay')
+    opacity = 0; 
   } else if (task.completed) {
-    opacity = 0.5; // Fica 50% opaco se estiver completo
+    opacity = 0.5;
   }
   
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: opacity, // <-- Usa a opacidade calculada
+    opacity: opacity,
   };
 
 
@@ -97,7 +96,7 @@ export function TaskCard({ task, index, onUpdateTask, onDeleteTask, onDuplicateT
     className={`
       cursor-grab
     font-family-poppins
-        w-[445px] h-[221px] rounded-lg border py-3 px-2 border-[#4E4E4E]
+        w-full h-[221px] rounded-lg border py-3 px-2 border-[#4E4E4E]
         bg-transparent gap-3
         flex flex-col
         transition-all duration-300 ease-out
@@ -108,7 +107,7 @@ export function TaskCard({ task, index, onUpdateTask, onDeleteTask, onDuplicateT
             justify-between
             flex
             items-center
-            w-[429px] h-10
+            w-full h-10
             
             '>
             <RenderPriorityTag priority={task.priority} />

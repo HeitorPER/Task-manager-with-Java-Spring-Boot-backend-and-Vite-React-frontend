@@ -252,79 +252,66 @@ export const useHome = () => {
 
   const handleTaskDragEnd = (event: DragEndEvent) => {
     setActiveDragTask(null); 
+
     const { active, over } = event;
-    
-    // Verificação de segurança 1
     if (!over || active.id === over.id) return;
 
-    // --- 1. Identificar a Tarefa (Active) ---
-    const activeData = active.data.current; 
+    const activeData = active.data.current;
     if (!activeData || activeData.type !== 'Task') return;
     
-    // Variáveis que faltavam:
-    const activeTaskId = active.id.toString();
     const oldListId = activeData.listId.toString();
+    const activeTaskId = active.id.toString();
 
-    // --- 2. Identificar o Destino (Over) ---
     const overData = over.data.current;
     if (!overData) return;
 
-    // Variáveis que faltavam:
     const overIsList = overData.type === 'List';
     const overIsTask = overData.type === 'Task';
 
-    if (!overIsList && !overIsTask) return; // Largou num sítio inválido
+    if (!overIsList && !overIsTask) return; 
 
-    // Corrigido: 'newListId' não existe, a variável correta é 'overListId'
-    const overListId = overIsList 
-        ? over.id.toString() 
-        : overData.listId.toString();
+    const newListId = overIsList 
+        ? over.id.toString()             
+        : overData.listId.toString();  
 
-    // --- 3. Atualização Otimista (Mover no Frontend) ---
     setLists(currentLists => {
       const oldListIndex = currentLists.findIndex(l => l.id.toString() === oldListId);
-      const newListIndex = currentLists.findIndex(l => l.id.toString() === overListId); // Corrigido
+      const newListIndex = currentLists.findIndex(l => l.id.toString() === newListId);
 
       if (oldListIndex === -1 || newListIndex === -1) return currentLists;
 
       const newListsState = currentLists.map(list => ({...list, tasks: [...list.tasks]}));
-      const oldList = newListsState[oldListIndex];
-      const newList = newListsState[newListIndex];
 
-      // 'activeTaskId' agora está definido e isto funciona:
-      const oldTaskIndex = oldList.tasks.findIndex(t => t.id.toString() === activeTaskId);
-      if (oldTaskIndex === -1) return currentLists;
+      if (oldListId === newListId) {
+        const list = newListsState[newListIndex];
+        const oldTaskIndex = list.tasks.findIndex(t => t.id.toString() === activeTaskId);
+        const newTaskIndex = overIsList ? 0 : (overData.index ?? 0);
+  
+        list.tasks = arrayMove(list.tasks, oldTaskIndex, newTaskIndex);
+        list.tasks.forEach((task, index) => task.displayOrder = index);
+        api.reorderTasks(newListId, list.tasks.map(t => t.id));
 
-      // 1. Remove da lista antiga
-      const [movedTask] = oldList.tasks.splice(oldTaskIndex, 1);
-      
-      // 2. Adiciona à nova lista
-      // 'overIsList' agora está definido e isto funciona:
-      const newIndex = overIsList ? 0 : (overData.index ?? 0);
-      newList.tasks.splice(newIndex, 0, movedTask);
-
-      // --- 3. Atualizar o 'displayOrder' (Sua lógica estava correta) ---
-      if (oldListId !== overListId) { // Corrigido
-        oldList.tasks.forEach((task, index) => {
-          task.displayOrder = index;
-        });
-      }
-      newList.tasks.forEach((task, index) => {
-        task.displayOrder = index;
-      });
-      // -------------------------------
-
-      // --- 4. Salvar no Backend (Sua lógica estava correta) ---
-      if (oldListId !== overListId) { // Corrigido
-        api.reorderTasks(oldListId, oldList.tasks.map(t => t.id));
-        api.reorderTasks(overListId, newList.tasks.map(t => t.id)); // Corrigido
       } else {
-        api.reorderTasks(overListId, newList.tasks.map(t => t.id)); // Corrigido
+        const oldList = newListsState[oldListIndex];
+        const newList = newListsState[newListIndex];
+        const oldTaskIndex = oldList.tasks.findIndex(t => t.id.toString() === activeTaskId);
+
+        if (oldTaskIndex === -1) return currentLists;
+
+        const [movedTask] = oldList.tasks.splice(oldTaskIndex, 1);
+        const newIndex = overIsList ? 0 : (overData.index ?? 0);
+
+        newList.tasks.splice(newIndex, 0, movedTask);
+        oldList.tasks.forEach((task, index) => task.displayOrder = index);
+        newList.tasks.forEach((task, index) => task.displayOrder = index);
+        api.reorderTasks(oldListId, oldList.tasks.map(t => t.id));
+        api.reorderTasks(newListId, newList.tasks.map(t => t.id));
       }
       
       return newListsState;
     });
   };
+
   return {
     lists,
     isLoading,

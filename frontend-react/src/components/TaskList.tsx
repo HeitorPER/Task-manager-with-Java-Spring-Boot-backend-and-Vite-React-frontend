@@ -69,8 +69,10 @@ const handleOpenSidebarWrapper = (task: Task) => {
   return (
     <div 
     className="
-      font-poppins w-[477px] min-h-[859px] rounded-lg border
+      font-family-poppins  min-h-[859px] rounded-lg border
       pt-4 pb-6 px-4 flex flex-col gap-3 border-[#4E4E4E] shrink-0 relative 
+      w-full
+      md:w-[477px]
       ">
       <div className='
         flex justify-between items-center text-white

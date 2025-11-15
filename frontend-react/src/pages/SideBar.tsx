@@ -64,7 +64,8 @@ export function SideBarEditionPage({ task, onClose, onSave , isClosing,  onDelet
         top-0 
         right-0 
         h-full 
-        w-[608px] 
+        w-full
+        md:w-[608px] 
         bg-[#1E1E1E] 
         border-l border-white
         shadow-2xl 

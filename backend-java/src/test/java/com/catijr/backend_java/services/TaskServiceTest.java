@@ -152,8 +152,7 @@ class TaskServiceTest {
             "Nome Atualizado", 
             null, // Description fica null
             Priority.MEDIUM, 
-            null, null, null, 
-            false
+            null, null, null, false, null
         );
 
         when(taskRepository.findById(100L)).thenReturn(Optional.of(sampleTask));
