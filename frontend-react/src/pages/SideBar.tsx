@@ -82,11 +82,15 @@ export function SideBarEditionPage({ task, onClose, onSave , isClosing,  onDelet
         ${(hasAnimatedIn && !isClosing) ? 'translate-x-0' : 'translate-x-full'}
       `}>
         <CloseSideBarButton onClick={handleSaveAndClose} /> 
-        <div className='w-full h-full md:w-[473px] md:h-[606px] flex flex-col gap-5'>
+        <div className='
+        w-[390px] h-full md:w-[473px] md:h-[606px] 
+        flex flex-col gap-5 
+        px-7 py-7 md:px-0 md:py-0
+        '>
         <div className="flex justify-between items-center ">
           
           
-          <h2 className="text-white font-bold text-[33.18px]">{task.name}</h2>
+          <h2 className="text-white font-bold text-[27.65px] md:text-[33.18px]">{task.name}</h2>
           <FinishTaskButton
           isCompleted={task.completed} 
             onClick={() => onToggleComplete(task)}

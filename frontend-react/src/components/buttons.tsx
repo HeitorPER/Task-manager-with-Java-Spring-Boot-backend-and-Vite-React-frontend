@@ -225,7 +225,8 @@ export function CloseSideBarButton({onClick}: CloseSideBarProps){
         rounded-lg
 
         absolute
-          top-12
+          top-4
+          md:top-12
           left-5 
           z-10
 
