@@ -12,7 +12,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/lists") 
-@CrossOrigin(origins = "http://localhost:5173") 
+//@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins ="https://task-manager-with-java-spring-boot-ogec.onrender.com")
 public class ListController {
 
     @Autowired
