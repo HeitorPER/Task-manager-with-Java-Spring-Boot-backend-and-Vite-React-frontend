@@ -76,7 +76,10 @@ export function DateViewerSideBar({ selectedDate, onSelectDate }: DateViewerSide
                 <span className="text-sm">{formattedDate}</span>
             </button>
             {isOpen && (
-                <div className="p-4 absolute top-10 left-0 z-30 bg-[#1E1E1E] border border-[#4E4E4E] rounded-lg shadow-xl">
+                <div className="
+                p-4 absolute top-10 left-0 z-30 -translate-x-1/2
+                md:absolute md:translate-x-0
+                bg-[#1E1E1E] border border-[#4E4E4E] rounded-lg shadow-xl">
                     <DayPicker
                         mode="single"
                         selected={dateObject}
