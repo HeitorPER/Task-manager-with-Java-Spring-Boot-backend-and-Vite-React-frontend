@@ -7,8 +7,10 @@ export function ProfileButton(){
     flex
     items-center
     justify-center
-    h-9
-    w-32
+    w-8
+    h-8
+    md:h-9
+    md:w-32
     top-5 
     left-5 
     rounded-xl 

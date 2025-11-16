@@ -6,7 +6,8 @@ function NavBar() {
     <div className="
         w-full
         h-[84px]
-        px-20
+        px-10
+        md:px-20
         py-3
         shadow-md
         flex
