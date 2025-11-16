@@ -21,7 +21,13 @@ public class DatabaseConfigLink {
 
         String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];
-        String jdbcUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+        
+        int port = dbUri.getPort();
+        if (port == -1) {
+            port = 5432;
+        }
+
+        String jdbcUrl = "jdbc:postgresql://" + dbUri.getHost() + ":" + port + dbUri.getPath();
 
         return DataSourceBuilder.create()
                 .url(jdbcUrl)
