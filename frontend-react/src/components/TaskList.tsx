@@ -110,11 +110,10 @@ const handleOpenSidebarWrapper = (task: Task) => {
       <SortableContext items={taskIds}>
         <div 
         ref={setNodeRef}
-        className={` 
-          grow   
+        className={`    
             flex flex-col 
             gap-3           
-            min-h-[100px]   
+            min-h-[400px]   
         ${isOver ? 'bg-blue-900/30 border-3-white' : ''}
       `}>
         {tasksSorted.map((task, index) => (
