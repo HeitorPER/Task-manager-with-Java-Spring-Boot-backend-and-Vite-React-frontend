@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tasks") // Rota base para tarefas
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins ="https://task-manager-with-java-spring-boot-ogec.onrender.com")
 public class TaskController {
 
     @Autowired
