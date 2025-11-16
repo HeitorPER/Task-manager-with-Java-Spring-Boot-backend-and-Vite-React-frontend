@@ -30,7 +30,10 @@ export function ProfileButton(){
         text-white
         '/>
         </div>
-        <div className='text-white'>
+        <div className='text-white 
+        hidden
+        md:block
+        '>
         <p>joao</p>
         </div>
     </button>

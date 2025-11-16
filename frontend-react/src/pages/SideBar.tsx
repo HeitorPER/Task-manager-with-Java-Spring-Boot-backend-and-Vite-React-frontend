@@ -82,7 +82,7 @@ export function SideBarEditionPage({ task, onClose, onSave , isClosing,  onDelet
         ${(hasAnimatedIn && !isClosing) ? 'translate-x-0' : 'translate-x-full'}
       `}>
         <CloseSideBarButton onClick={handleSaveAndClose} /> 
-        <div className='w-[473px] h-[606px] flex flex-col gap-5'>
+        <div className='w-full h-full md:w-[473px] md:h-[606px] flex flex-col gap-5'>
         <div className="flex justify-between items-center ">
           
           
@@ -123,7 +123,7 @@ export function SideBarEditionPage({ task, onClose, onSave , isClosing,  onDelet
             onBlur={handleSave} 
             placeholder="Adicionar descrição..."
             className="text-white border border-[#4E4E4E] 
-            w-[473px] h-[232px] resize-none rounded-sm py-2 px-2"
+            w-full h-full md:w-[473px] md:h-[232px] resize-none rounded-sm py-2 px-2"
           />
         </div>
 
