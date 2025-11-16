@@ -2,7 +2,8 @@ import { NewList } from '../components/buttons';
 import { TaskList } from '../components/TaskList';
 import {TaskCard} from '../components/TasksCard'
 import { useHome } from '../hooks/useHome';
-import {SucessDeleteList, ConfirmDeleteList, ConfirmDeleteTask, SucessDeleteTask} from '../components/icons-Snackbars'
+import {SucessDeleteList, SucessDeleteTask} from '../components/icons-Snackbars'
+import {ConfirmDeleteList, ConfirmDeleteTask} from '../components/ConfirmDelete'
 import { SideBarEditionPage } from './SideBar';
 import { DndContext, PointerSensor, useSensor, useSensors, closestCorners, DragOverlay, defaultDropAnimationSideEffects} from '@dnd-kit/core';
 import type {DropAnimation} from '@dnd-kit/core';
